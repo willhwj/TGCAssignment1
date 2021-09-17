@@ -1,0 +1,33 @@
+# Metadata for Hotels
+---
+Identifier: '88031120-c55a-490a-89bb-6e30ce0cc122'
+Name: 'hotels'
+Title: 'Hotels'
+Description: 'Location of Hotels by Hotels Licensing Board,'
+Topics:
+  - 'Infrastructure'
+Keywords:
+  - 'HOTELS LICENSING BOARD'
+  - 'Hotels'
+  - 'Onemap'
+  - 'hotels licensing board'
+Publisher:
+  Name: 'Hotels Licensing Board'
+  Admin 1:
+    Name: 'Katrina Tan'
+    Department: 'HOTELS LICENSING BOARD'
+    Email: 'hlb_secretariat@hlb.gov.sg'
+Sources:
+  - 'Hotels Licensing Board'
+Source Url: 'http://www.onemap.sg/API/Help/'
+License: 'https://data.gov.sg/open-data-licence'
+Frequency: 'Half-yearly'
+Last Updated: '2021-02-17T10:02:57.196049'
+Resources:
+  -
+    Identifier: '54309a16-7ebd-4662-b8c8-d3a7e273b52e'
+    Name: 'hotels.kml'
+    Title: 'Hotels'
+    Url: 'https://data.gov.sg/dataset/88031120-c55a-490a-89bb-6e30ce0cc122/resource/54309a16-7ebd-4662-b8c8-d3a7e273b52e/download/hotels.kml'
+    Format: 'KML'
+    Last Updated: '2021-02-17T10:02:10.749359'
