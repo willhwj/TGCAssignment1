@@ -22,7 +22,8 @@ window.addEventListener('DOMContentLoaded', function() {
         color: 'red',
         fillColor: 'orange',
         fillOpacity: 0.5,
-        radius: 500
+        radius: 700
     })
-    covidClusters.addTo(map)
+    covidClusters.addTo(map);
+    covidClusters.bindPopup('<p>Chinatown Complex Cluster<p>');
 })
