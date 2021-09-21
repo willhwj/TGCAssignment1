@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', async function() {
 
     let map = L.map('map').setView([1.3521, 103.8198], 12);
 
@@ -14,9 +14,20 @@ window.addEventListener('DOMContentLoaded', function() {
     let staycayHotels = L.marker([1.2993, 103.8582]);
     staycayHotels.addTo(map);
     staycayHotels.bindPopup("<p>Andaz Singapore</p>");
-    // staycayHotels.addEventListener("click", function() {
-    //     alert("This is Andaz Singapore!");
-    // })
+
+    // create marker cluster for all staycation hotels
+    let staycayHotelLayer = L.markerClusterGroup();
+    let allStaycayHotels = await getCoordinates('data-source/staycay-hotels.csv');
+
+    for (let i = 0; i < allStaycayHotels.length; i++) {
+        let pos = allStaycayHotels[i].COORDINATES;
+        let info = allStaycayHotels[i].DESCRIPTION;
+
+        let hotelMarker = L.marker(pos);
+        hotelMarker.bindPopup(info);
+        hotelMarker.addTo(staycayHotelLayer);
+    }
+    staycayHotelLayer.addTo(map);
 
     let covidClusters = L.circle([1.2826, 103.8431], {
         color: 'red',

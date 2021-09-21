@@ -21,12 +21,12 @@ function cleanseName(rawHotelName) {
     return cleanName;
 }
 
-let str1 = `Resorts World Sentosa – Crockfords Tower`;
-let newName1 = cleanseName(str1);
-let str2 = `Crockfords Tower`;
-let newName2 = cleanseName(str2);
-console.log(newName1);
-console.log(newName2);
+// let str1 = `Resorts World Sentosa – Crockfords Tower`;
+// let newName1 = cleanseName(str1);
+// let str2 = `Crockfords Tower`;
+// let newName2 = cleanseName(str2);
+// console.log(newName1);
+// console.log(newName2);
 
 // a function to extract raw data from XML list of hotels by STB and create an array of objects, each object contains essential info of 1 hotel
 async function fromXML(url) {
@@ -50,12 +50,14 @@ async function fromXML(url) {
         };
         // get the coordinates and store as an array of long lat
         let coordinatesLatLng = hotel.children[4].firstElementChild.childNodes[0].nodeValue;
-        let coordinatesLngLat = coordinatesLatLng.split(',');
-        coordinatesLngLat.splice(2, 1);
-        coordinatesLngLat[0] = parseFloat(coordinatesLngLat[0]);
-        coordinatesLngLat[1] = parseFloat(coordinatesLngLat[1]);
+        coordinatesLatLng = coordinatesLatLng.split(',');
+        coordinatesLatLng.splice(2, 1);
+        let coordinatesLngLat = [];
+        coordinatesLngLat[0] = parseFloat(coordinatesLatLng[1]);
+        coordinatesLngLat[1] = parseFloat(coordinatesLatLng[0]);
         oneHotel.COORDINATES = coordinatesLngLat;
-
+        // get hotel description/ CDATA
+        oneHotel.DESCRIPTION = hotel.children[2].textContent;
         // add the hotel object to hotelList array
         stbHotelList.push(oneHotel);
     }
@@ -86,6 +88,7 @@ async function getCoordinates(targetURL) {
                     matchedHotel.COORDINATES = h.COORDINATES;
                     matchedHotel.POSTALCODE = h.POSTALCODE;
                     matchedHotel.ADDRESS = h.ADDRESS;
+                    matchedHotel.DESCRIPTION = h.DESCRIPTION;
                     hotelList.push(matchedHotel);
                     break;
                 };
@@ -95,14 +98,13 @@ async function getCoordinates(targetURL) {
             }
         }
     }
-    console.log('after for loop, hotelList is ', hotelList);
+    console.log('after for loop, matched hotelList is ', hotelList);
     console.log('unmatchedHotels is ', unmatchedHotels);
     return hotelList;
 };
 
-getCoordinates('data-source/SHN-hotels.csv');
+// getCoordinates('data-source/SHN-hotels.csv');
 
-getCoordinates('data-source/staycay-hotels.csv');
 
 // get coordinates from FourSquare API for covid clusters
 
