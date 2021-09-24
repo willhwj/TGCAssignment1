@@ -2,8 +2,93 @@
 async function fromCSV(url) {
     let response = await axios.get(url);
     let output = await csv().fromString(response.data);
+    console.log('output is ', output);
     return output;
 }
+
+// // a function to structure object returned from fromCSV function for covid cluster into an array of objects
+async function structure(url) {
+    let rawObj = await fromCSV('data-source/covid-clusters21Sep2021.csv');
+    let finalObj = {
+        date: Object.keys(rawObj[0])[0],
+        clusterList: []
+    };
+    let i = 0;
+    let eachObj = {};
+    for (let r of rawObj) {
+
+        if (i > 3 && i % 4 === 0) {
+            eachObj['ClusterLocation'] = r[Object.keys(r)[0]];
+        }
+        if (i > 3 && i % 4 === 1) {
+            eachObj[`NumberOfNewCases`] = r[Object.keys(r)[0]];
+        }
+        if (i > 3 && i % 4 === 2) {
+            eachObj['TotalCases'] = r[Object.keys(r)[0]];
+        }
+        if (i > 3 && i % 4 === 3) {
+            eachObj['Remarks'] = r[Object.keys(r)[0]];
+            finalObj.clusterList.push(eachObj);
+            eachObj = {};
+        }
+        i++;
+    }
+    console.log('structured covid clusters are ', finalObj);
+    return finalObj;
+}
+
+// structure('data-source/covid-clusters21Sep2021.csv');
+
+// a function to get coordinates for covid clusters 
+async function getCoordinatesCovidClusters(clusterName) {
+    //  first search via OneMap API
+    let endpoint = 'https://developers.onemap.sg/commonapi/search?';
+    let response = await axios.get(endpoint, {
+        params: {
+            searchVal: clusterName,
+            returnGeom: 'Y',
+            getAddrDetails: 'Y',
+            pageNum: 1
+        }
+    });
+
+    // if no result, 2nd search via Esri Arcgis API
+    if (response.data.found === 0) {
+        console.log('enter 2nd search via Esri');
+        endpoint = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?';
+        response = await axios.get(endpoint, {
+            params: {
+                SingleLine: clusterName,
+                f: 'JSON',
+                city: 'Singapore',
+                countryCode: 'SG'
+            }
+        });
+        //  if no result, 3rd search via FourSquare API
+        if (response.data.candidates.length === 0) {
+            console.log('enter 3rd search via FourSquare');
+            endpoint = 'https://api.foursquare.com/v2/venues/search';
+            response = await axios.get(endpoint, {
+                params: {
+                    near: 'Singapore, SG',
+                    client_id: 'N2PP1USWA513HVL2SJDAVVOW2WCEV2DNPSOIUVK2T1XLLKQP',
+                    client_secret: 'VPKUG3K1D1VKGLOD2NHDMWHGV32NNDVQZMJ33Q1BGRGTRIUT',
+                    v: '20210901',
+                    query: clusterName,
+                    limit: 5,
+                    radius: 25000
+                }
+            });
+        }
+    }
+
+    let result = response.data;
+    console.log('response data is ', result);
+}
+getCoordinatesCovidClusters('Pfizer Asia Pacific Pte Ltd');
+
+// a function to get coordinates for covid clusters via FourSquare API
+
 
 // a function to cleanse hotel name for better matching - remove the following: Singapore, dash(-), comma(,), resorts world sentosa, convert all to small letters.
 function cleanseName(rawHotelName) {
@@ -65,8 +150,7 @@ async function fromXML(url) {
 }
 
 // a function to get coordinates for hotels based on hotelList array from XML file provided by STB 
-// also create an array of stay-home-notice hotels not matched
-// return an array of matched hotels
+// also create an array of stay-home-notice hotels not matched, return an array of matched hotels
 async function getCoordinates(targetURL) {
     let hotelsRaw = await fromCSV(targetURL);
     let stbHotelList = await fromXML('data-source/hotel-locations.kml');
@@ -103,10 +187,4 @@ async function getCoordinates(targetURL) {
     return hotelList;
 };
 
-// getCoordinates('data-source/SHN-hotels.csv');
-
-
 // get coordinates from FourSquare API for covid clusters
-
-
-// get coordinates from data.gov API for dengue clusters9fdf
