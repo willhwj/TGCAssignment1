@@ -2,12 +2,11 @@
 async function fromCSV(url) {
     let response = await axios.get(url);
     let output = await csv().fromString(response.data);
-    console.log('output is ', output);
     return output;
 }
 
 // // a function to structure object returned from fromCSV function for covid cluster into an array of objects
-async function structure(url) {
+async function getCovidClusterList(url) {
     let rawObj = await fromCSV('data-source/covid-clusters21Sep2021.csv');
     let finalObj = {
         date: Object.keys(rawObj[0])[0],
@@ -18,7 +17,9 @@ async function structure(url) {
     for (let r of rawObj) {
 
         if (i > 3 && i % 4 === 0) {
-            eachObj['ClusterLocation'] = r[Object.keys(r)[0]];
+            eachObj['ClusterName'] = r[Object.keys(r)[0]];
+            console.log('current covid cluster is ', eachObj.ClusterName);
+            eachObj.Address = await getAddressCovidCluster(eachObj.ClusterName);
         }
         if (i > 3 && i % 4 === 1) {
             eachObj[`NumberOfNewCases`] = r[Object.keys(r)[0]];
@@ -33,14 +34,14 @@ async function structure(url) {
         }
         i++;
     }
-    console.log('structured covid clusters are ', finalObj);
+    console.log(finalObj);
     return finalObj;
 }
 
-// structure('data-source/covid-clusters21Sep2021.csv');
+// a function to get list of address candidates for one covid cluster
+async function getAddressCovidCluster(clusterName) {
+    let addressList = [];
 
-// a function to get coordinates for covid clusters 
-async function getCoordinatesCovidClusters(clusterName) {
     //  first search via OneMap API
     let endpoint = 'https://developers.onemap.sg/commonapi/search?';
     let response = await axios.get(endpoint, {
@@ -52,8 +53,19 @@ async function getCoordinatesCovidClusters(clusterName) {
         }
     });
 
+    if (response.data.found != 0) {
+        let results = response.data.results;
+        for (let r of results) {
+            let addDetail = {};
+            addDetail.name = r.BUILDING;
+            addDetail.address = r.ADDRESS;
+            addDetail.postal = r.POSTAL;
+            addDetail.coordinate = [parseFloat(r.LATITUDE), parseFloat(r.LONGTITUDE)];
+            addressList.push(addDetail);
+        }
+    }
     // if no result, 2nd search via Esri Arcgis API
-    if (response.data.found === 0) {
+    else {
         console.log('enter 2nd search via Esri');
         endpoint = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?';
         response = await axios.get(endpoint, {
@@ -61,11 +73,24 @@ async function getCoordinatesCovidClusters(clusterName) {
                 SingleLine: clusterName,
                 f: 'JSON',
                 city: 'Singapore',
-                countryCode: 'SG'
+                countryCode: 'SG',
+                outFields: 'Place_addr, Postal'
             }
         });
-        //  if no result, 3rd search via FourSquare API
-        if (response.data.candidates.length === 0) {
+
+        if (response.data.candidates.length != 0) {
+            results = response.data.candidates;
+            for (let r of results) {
+                let addDetail = {};
+                addDetail.name = r.address;
+                addDetail.address = r.attributes.Place_addr;
+                addDetail.postal = r.attributes.Postal;
+                addDetail.coordinate = [parseFloat(r.location.y), parseFloat(r.location.x)];
+                addressList.push(addDetail);
+            }
+        }
+        //  if no result, 3rd search via FourSquare API 
+        else {
             console.log('enter 3rd search via FourSquare');
             endpoint = 'https://api.foursquare.com/v2/venues/search';
             response = await axios.get(endpoint, {
@@ -75,20 +100,22 @@ async function getCoordinatesCovidClusters(clusterName) {
                     client_secret: 'VPKUG3K1D1VKGLOD2NHDMWHGV32NNDVQZMJ33Q1BGRGTRIUT',
                     v: '20210901',
                     query: clusterName,
-                    limit: 5,
+                    limit: 10,
                     radius: 25000
                 }
             });
+            results = response.data.response.venues;
+            for (let r of results) {
+                let addDetail = {};
+                addDetail.name = r.name;
+                addDetail.address = r.location.address;
+                addDetail.coordinate = [r.location.lat, r.location.lng];
+                addressList.push(addDetail);
+            }
         }
     }
-
-    let result = response.data;
-    console.log('response data is ', result);
+    return addressList;
 }
-getCoordinatesCovidClusters('Pfizer Asia Pacific Pte Ltd');
-
-// a function to get coordinates for covid clusters via FourSquare API
-
 
 // a function to cleanse hotel name for better matching - remove the following: Singapore, dash(-), comma(,), resorts world sentosa, convert all to small letters.
 function cleanseName(rawHotelName) {
@@ -105,13 +132,6 @@ function cleanseName(rawHotelName) {
 
     return cleanName;
 }
-
-// let str1 = `Resorts World Sentosa – Crockfords Tower`;
-// let newName1 = cleanseName(str1);
-// let str2 = `Crockfords Tower`;
-// let newName2 = cleanseName(str2);
-// console.log(newName1);
-// console.log(newName2);
 
 // a function to extract raw data from XML list of hotels by STB and create an array of objects, each object contains essential info of 1 hotel
 async function fromXML(url) {

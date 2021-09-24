@@ -30,18 +30,21 @@ window.addEventListener('DOMContentLoaded', async function() {
     // createHotelLayer(staycayHotels);
     // createHotelLayer(shnHotels);
 
-
-
     // add a layer group of covid clusters
-    let covidClusters = L.circle([1.2826, 103.8431], {
-        color: 'red',
-        fillColor: 'orange',
-        fillOpacity: 0.5,
-        radius: 700
-    })
-    covidClusters.addTo(map);
-    covidClusters.bindPopup('<p>Chinatown Complex Cluster<p>');
-
+    let clusterwithDate = await getCovidClusterList('data-source/covid-clusters21Sep2021.csv');
+    let covidClusterList = clusterwithDate.clusterList;
+    let covidClusterLayer = L.markerClusterGroup();
+    for (let c of covidClusterList) {
+        let covidCluster = L.circle([c.Address[0].coordinate[0], c.Address[0].coordinate[1]], {
+            color: 'red',
+            fillColor: 'orange',
+            fillOpacity: 0.5,
+            radius: 700
+        })
+        covidCluster.addTo(map);
+        covidCluster.bindPopup(`<p>Cluster Name: ${c.ClusterName}<p>
+                                <p>Address: ${c.Address[0].address}</p>`);
+    }
 
     // add a search box for free text search
     const apiKey = "AAPKfec8b2a8202441128940982c1ee70260VX-0kMk_0Y6BEFcDwLRAPgAisl9NMvGoq7wmtWdj-xIfX58JySrVL-BXMWUSlfZZ";
