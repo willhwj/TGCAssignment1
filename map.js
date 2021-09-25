@@ -47,11 +47,8 @@ window.addEventListener('DOMContentLoaded', async function() {
     });
 
     // add a layer group of all hotels
-    let allHotels = await fromXML('data-source/hotel-locations.kml');
-    // let staycayHotels = await getCoordinates('data-source/staycay-hotels.csv');
-    // let shnHotels = await getCoordinates('data-source/SHN-hotels.csv')
+    let masterHotelLists = await getMasterHotelLists();
 
-    // a function to create marker cluster for a group of hotels based on data source
     function createHotelLayer(hotelList) {
         let hotelLayer = L.markerClusterGroup();
         for (let hotel of hotelList) {
@@ -62,6 +59,8 @@ window.addEventListener('DOMContentLoaded', async function() {
                                     <tr><th>${hotel.DESCRIPTION[2].key}: </th><td>${hotel.DESCRIPTION[2].value}</td></th>               
                                     <tr><th>${hotel.DESCRIPTION[1].key}: </th><td>${hotel.DESCRIPTION[1].value}</td></th> 
                                     <tr><th>Email: </th><td>${hotel.DESCRIPTION[0].value}</td></th>
+                                    <tr><th>Approved for Staycation?</th><td>${hotel.STAYCAY}</td></th>
+                                    <tr><th>Open for Stay-Home-Notice?</th><td>${hotel.SHN}</td></th>
                                     </table>
                                     `);
             hotelMarker.addTo(hotelLayer);
@@ -69,7 +68,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         hotelLayer.addTo(map);
     }
 
-    createHotelLayer(allHotels);
+    createHotelLayer(masterHotelLists.shn);
     // createHotelLayer(staycayHotels);
     // createHotelLayer(shnHotels);
 

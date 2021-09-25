@@ -88,7 +88,7 @@ async function getAddressCovidCluster(clusterName) {
     }
     // if no result, 2nd search via Esri Arcgis API
     else {
-        console.log('enter 2nd search via Esri');
+        // console.log('enter 2nd search via Esri');
         endpoint = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?';
         response = await axios.get(endpoint, {
             params: {
@@ -113,7 +113,7 @@ async function getAddressCovidCluster(clusterName) {
         }
         //  if no result, 3rd search via FourSquare API 
         else {
-            console.log('enter 3rd search via FourSquare');
+            // console.log('enter 3rd search via FourSquare');
             endpoint = 'https://api.foursquare.com/v2/venues/search';
             response = await axios.get(endpoint, {
                 params: {
@@ -224,17 +224,18 @@ async function fromXML(url) {
         oneHotel.COORDINATES = coordinatesLngLat;
         // get hotel description/ CDATA
         oneHotel.DESCRIPTION = cdataToHTML(hotel.children[2].textContent, 'hotel');
+        oneHotel.STAYCAY = 'No';
+        oneHotel.SHN = 'No';
         // add the hotel object to hotelList array
         stbHotelList.push(oneHotel);
     }
     return stbHotelList;
 }
 
-// a function to get coordinates for hotels based on hotelList array from XML file provided by STB 
-// also create an array of stay-home-notice hotels not matched, return an array of matched hotels
-async function getCoordinates(targetURL) {
+// a function to match hotels against XML file provided by STB, and return matched list of hotels with coordinates & data
+async function getCoordinates(targetURL, allHotelList, listName) {
     let hotelsRaw = await fromCSV(targetURL);
-    let stbHotelList = await fromXML('data-source/hotel-locations.kml');
+    let allHotels = allHotelList;
     let unmatchedHotels = [];
     let hotelList = [];
 
@@ -242,7 +243,7 @@ async function getCoordinates(targetURL) {
         let matched = false;
         let currentName = s['Hotel Name'];
         if (currentName != '') {
-            for (let h of stbHotelList) {
+            for (let h of allHotels) {
                 let cleanTargetName = cleanseName(s['Hotel Name']);
                 let cleanStbName = cleanseName(h.NAME);
 
@@ -254,6 +255,14 @@ async function getCoordinates(targetURL) {
                     matchedHotel.POSTALCODE = h.POSTALCODE;
                     matchedHotel.ADDRESS = h.ADDRESS;
                     matchedHotel.DESCRIPTION = h.DESCRIPTION;
+                    if (listName === 'staycay') {
+                        h.STAYCAY = 'Yes';
+                    }
+                    if (listName === 'shn') {
+                        h.SHN = 'Yes';
+                    }
+                    matchedHotel.STAYCAY = h.STAYCAY;
+                    matchedHotel.SHN = h.SHN;
                     hotelList.push(matchedHotel);
                     break;
                 };
@@ -263,7 +272,26 @@ async function getCoordinates(targetURL) {
             }
         }
     }
-    console.log('after for loop, matched hotelList is ', hotelList);
-    console.log('unmatchedHotels is ', unmatchedHotels);
+    // console.log('after for loop, matched hotelList is ', hotelList);
+    // console.log('unmatchedHotels is ', unmatchedHotels);
     return hotelList;
 };
+
+// function to get hotel master list object with 4 lists: all, shn, staycay, nonShnStaycay
+async function getMasterHotelLists() {
+    const all = await fromXML('data-source/hotel-locations.kml');
+    const shn = await getCoordinates('data-source/SHN-hotels.csv', all, 'shn');
+    const staycay = await getCoordinates('data-source/staycay-hotels.csv', all, 'staycay');
+    const nonShnStaycay = all.filter(function(hotel) {
+        return Boolean(hotel.STAYCAY === true && hotel.SHN === false)
+    });
+
+    const masterLists = {
+        all: all,
+        shn: shn,
+        staycay: staycay,
+        nonShnStaycay: nonShnStaycay
+    };
+    // console.log('masterHotelLists is ', masterLists);
+    return masterLists;
+}
