@@ -46,7 +46,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         }
     });
 
-    // add a layer group of all hotels
+    // add 4 layer group of all hotels. SHN hotels, staycay hotels, non-SHN staycay hotels.
     let masterHotelLists = await getMasterHotelLists();
 
     function createHotelLayer(hotelList) {
@@ -65,12 +65,13 @@ window.addEventListener('DOMContentLoaded', async function() {
                                     `);
             hotelMarker.addTo(hotelLayer);
         }
-        hotelLayer.addTo(map);
+        return hotelLayer;
     }
 
-    createHotelLayer(masterHotelLists.shn);
-    // createHotelLayer(staycayHotels);
-    // createHotelLayer(shnHotels);
+    const allHotelsLayer = createHotelLayer(masterHotelLists.all);
+    const staycayHotelsLayer = createHotelLayer(masterHotelLists.staycay);
+    const shnHotelsLayer = createHotelLayer(masterHotelLists.shn);
+    const nonShnStaycayLayer = createHotelLayer(masterHotelLists.nonShnStaycay);
 
     // add a layer group of covid clusters
     let clusterwithDate = await getCovidClusterList('data-source/covid-clusters23Sep2021.csv');
@@ -85,7 +86,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             fillOpacity: 0.5,
             radius: 700
         })
-        covidCluster.addTo(map);
+
         covidCluster.bindPopup(`<table>
                                 <tr><th>Covid-19 Cluster Name: </th><td>${c.ClusterName}</td></tr>
                                 <tr><th>Address: </th><td>${c.Address[0].address}</td></tr>
@@ -93,6 +94,7 @@ window.addEventListener('DOMContentLoaded', async function() {
                                 <tr><th>Total Cases by ${newCaseDate}: </th><td>${c.TotalCases}</td></tr>
                                 <tr><th>Remarks: </th><td>${c.Remarks}</td></tr>
                                 </table>`);
+        covidCluster.addTo(covidClusterLayer);
     }
 
     // add a layer of dengue clusters to the map
@@ -102,7 +104,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             let cdata = cdataToHTML(feature.properties.Description, 'dengue');
             // convert FMEL_UPD_D string to date string
             let rawDateString = cdata[3].value.substring(0, 8);
-            let newDateFormat = new Date(`${rawDateString.slice(0,4)}/${rawDateString.slice(4,6)}/${rawDateString.slice(6,8)}`);
+            let newDateFormat = new Date(`${rawDateString.slice(0, 4)}/${rawDateString.slice(4, 6)}/${rawDateString.slice(6, 8)}`);
             let newDateString = newDateFormat.toDateString().substring(4);
             layer.bindPopup(`<table>
                             <thead><strong>${cdata[2].value}</strong></thead>
@@ -110,9 +112,22 @@ window.addEventListener('DOMContentLoaded', async function() {
                             <tr><th>Total Cases by ${newDateString}: </th><td>${cdata[1].value}</td></tr>
                             </table>`);
         }
-    }).addTo(map);
+    });
 
-    // create a filter on the map - layerControl, layMap
+    // create a layer control on the map
+    let baseLayer = {
+        "All Hotels": allHotelsLayer,
+        'Staycation Hotels': staycayHotelsLayer,
+        'Stay-Home-Notice(SHN) Hotels': shnHotelsLayer,
+        'Non-SHN Staycation Hotels': nonShnStaycayLayer
+    };
+
+    let overLay = {
+        'Dengue Clusters': dengueClusterLayer,
+        'COVID-19 Clusters': covidClusterLayer
+    }
+
+    L.control.layers(baseLayer, overLay).addTo(map);
 
     // improve the popup with better info in a table
 

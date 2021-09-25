@@ -283,9 +283,9 @@ async function getMasterHotelLists() {
     const shn = await getCoordinates('data-source/SHN-hotels.csv', all, 'shn');
     const staycay = await getCoordinates('data-source/staycay-hotels.csv', all, 'staycay');
     const nonShnStaycay = all.filter(function(hotel) {
-        return Boolean(hotel.STAYCAY === true && hotel.SHN === false)
+        return Boolean(hotel.STAYCAY === 'Yes' && hotel.SHN === 'No')
     });
-
+    console.log(staycay);
     const masterLists = {
         all: all,
         shn: shn,
