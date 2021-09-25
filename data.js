@@ -5,9 +5,9 @@ async function fromCSV(url) {
     return output;
 }
 
-// // a function to structure object returned from fromCSV function for covid cluster into an array of objects
+// a function to convert return of fromCSV function into an array of covid clusters
 async function getCovidClusterList(url) {
-    let rawObj = await fromCSV('data-source/covid-clusters21Sep2021.csv');
+    let rawObj = await fromCSV(url);
     let finalObj = {
         date: Object.keys(rawObj[0])[0],
         clusterList: []
@@ -18,7 +18,6 @@ async function getCovidClusterList(url) {
 
         if (i > 3 && i % 4 === 0) {
             eachObj['ClusterName'] = r[Object.keys(r)[0]];
-            console.log('current covid cluster is ', eachObj.ClusterName);
             eachObj.Address = await getAddressCovidCluster(eachObj.ClusterName);
         }
         if (i > 3 && i % 4 === 1) {
@@ -34,8 +33,27 @@ async function getCovidClusterList(url) {
         }
         i++;
     }
-    console.log(finalObj);
     return finalObj;
+}
+
+// a function to convert 1st letter to cap for each word, used to standardize address
+function firstLetterCap(address) {
+    if (typeof address !== 'undefined') {
+        let array = address.split(' ');
+        let newArray = [];
+        for (let a of array) {
+            if (/^[a-zA-Z]$/.test(a[0])) {
+                let newWord = a[0].toUpperCase() + a.substring(1).toLowerCase();
+                newArray.push(newWord);
+            } else {
+                newArray.push(a);
+            }
+        }
+        let newAddress = newArray.join(' ');
+        return newAddress;
+    } else {
+        return address;
+    }
 }
 
 // a function to get list of address candidates for one covid cluster
@@ -58,7 +76,7 @@ async function getAddressCovidCluster(clusterName) {
         for (let r of results) {
             let addDetail = {};
             addDetail.name = r.BUILDING;
-            addDetail.address = r.ADDRESS;
+            addDetail.address = firstLetterCap(r.ADDRESS);
             addDetail.postal = r.POSTAL;
             addDetail.coordinate = [parseFloat(r.LATITUDE), parseFloat(r.LONGTITUDE)];
             addressList.push(addDetail);
@@ -83,7 +101,7 @@ async function getAddressCovidCluster(clusterName) {
             for (let r of results) {
                 let addDetail = {};
                 addDetail.name = r.address;
-                addDetail.address = r.attributes.Place_addr;
+                addDetail.address = firstLetterCap(r.attributes.Place_addr);
                 addDetail.postal = r.attributes.Postal;
                 addDetail.coordinate = [parseFloat(r.location.y), parseFloat(r.location.x)];
                 addressList.push(addDetail);
@@ -108,12 +126,14 @@ async function getAddressCovidCluster(clusterName) {
             for (let r of results) {
                 let addDetail = {};
                 addDetail.name = r.name;
-                addDetail.address = r.location.address;
+                addDetail.address = firstLetterCap(r.location.address);
                 addDetail.coordinate = [r.location.lat, r.location.lng];
+                addDetail.postal = r.location.postalCode;
                 addressList.push(addDetail);
             }
         }
     }
+
     return addressList;
 }
 
@@ -206,5 +226,3 @@ async function getCoordinates(targetURL) {
     console.log('unmatchedHotels is ', unmatchedHotels);
     return hotelList;
 };
-
-// get coordinates from FourSquare API for covid clusters

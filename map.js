@@ -11,41 +11,6 @@ window.addEventListener('DOMContentLoaded', async function() {
         accessToken: 'pk.eyJ1Ijoid2lsbGh3aiIsImEiOiJja3RoMTBvOXAwbmVtMnBydGFkcXFkbmRmIn0.JIAa-tRJ8OGxwsucNfQffQ'
     }).addTo(map);
 
-    let allHotels = await fromXML('data-source/hotel-locations.kml');
-    // let staycayHotels = await getCoordinates('data-source/staycay-hotels.csv');
-    // let shnHotels = await getCoordinates('data-source/SHN-hotels.csv')
-
-    // a function to create marker cluster for a group of hotels based on data source
-    function createHotelLayer(hotelList) {
-        let hotelLayer = L.markerClusterGroup();
-        for (let hotel of hotelList) {
-            let hotelMarker = L.marker(hotel.COORDINATES);
-            hotelMarker.bindPopup(hotel.DESCRIPTION);
-            hotelMarker.addTo(hotelLayer);
-        }
-        hotelLayer.addTo(map);
-    }
-
-    // createHotelLayer(allHotels);
-    // createHotelLayer(staycayHotels);
-    // createHotelLayer(shnHotels);
-
-    // add a layer group of covid clusters
-    let clusterwithDate = await getCovidClusterList('data-source/covid-clusters21Sep2021.csv');
-    let covidClusterList = clusterwithDate.clusterList;
-    let covidClusterLayer = L.markerClusterGroup();
-    for (let c of covidClusterList) {
-        let covidCluster = L.circle([c.Address[0].coordinate[0], c.Address[0].coordinate[1]], {
-            color: 'red',
-            fillColor: 'orange',
-            fillOpacity: 0.5,
-            radius: 700
-        })
-        covidCluster.addTo(map);
-        covidCluster.bindPopup(`<p>Cluster Name: ${c.ClusterName}<p>
-                                <p>Address: ${c.Address[0].address}</p>`);
-    }
-
     // add a search box for free text search
     const apiKey = "AAPKfec8b2a8202441128940982c1ee70260VX-0kMk_0Y6BEFcDwLRAPgAisl9NMvGoq7wmtWdj-xIfX58JySrVL-BXMWUSlfZZ";
     const basemapEnum = "ArcGIS:Navigation";
@@ -80,6 +45,48 @@ window.addEventListener('DOMContentLoaded', async function() {
             marker.openPopup();
         }
     });
+
+    let allHotels = await fromXML('data-source/hotel-locations.kml');
+    // let staycayHotels = await getCoordinates('data-source/staycay-hotels.csv');
+    // let shnHotels = await getCoordinates('data-source/SHN-hotels.csv')
+
+    // a function to create marker cluster for a group of hotels based on data source
+    function createHotelLayer(hotelList) {
+        let hotelLayer = L.markerClusterGroup();
+        for (let hotel of hotelList) {
+            let hotelMarker = L.marker(hotel.COORDINATES);
+            hotelMarker.bindPopup(hotel.DESCRIPTION);
+            hotelMarker.addTo(hotelLayer);
+        }
+        hotelLayer.addTo(map);
+    }
+
+    createHotelLayer(allHotels);
+    // createHotelLayer(staycayHotels);
+    // createHotelLayer(shnHotels);
+
+    // add a layer group of covid clusters
+    let clusterwithDate = await getCovidClusterList('data-source/covid-clusters23Sep2021.csv');
+    console.log('covidclusters object is ', clusterwithDate);
+    let newCaseDate = clusterwithDate.date;
+    let covidClusterList = clusterwithDate.clusterList;
+    let covidClusterLayer = L.markerClusterGroup();
+    for (let c of covidClusterList) {
+        let covidCluster = L.circle([c.Address[0].coordinate[0], c.Address[0].coordinate[1]], {
+            color: 'red',
+            fillColor: 'orange',
+            fillOpacity: 0.5,
+            radius: 700
+        })
+        covidCluster.addTo(map);
+        covidCluster.bindPopup(`<table>
+                                <tr><th>Cluster Name: </th><td>${c.ClusterName}</td></tr>
+                                <tr><th>Address: </th><td>${c.Address[0].address}</td></tr>
+                                <tr><th>New Cases on ${newCaseDate}: </th><td>${c.NumberOfNewCases}</td></tr>
+                                <tr><th>Total Cases by ${newCaseDate}: </th><td>${c.TotalCases}</td></tr>
+                                <tr><th>Remarks: </th><td>${c.Remarks}</td></tr>
+                                </table>`);
+    }
 
     // add a layer of dengue clusters to the map
     let response = await axios.get('data-source/dengue-clusters-geojson.geojson');
