@@ -46,6 +46,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         }
     });
 
+    // add a layer group of all hotels
     let allHotels = await fromXML('data-source/hotel-locations.kml');
     // let staycayHotels = await getCoordinates('data-source/staycay-hotels.csv');
     // let shnHotels = await getCoordinates('data-source/SHN-hotels.csv')
@@ -55,7 +56,14 @@ window.addEventListener('DOMContentLoaded', async function() {
         let hotelLayer = L.markerClusterGroup();
         for (let hotel of hotelList) {
             let hotelMarker = L.marker(hotel.COORDINATES);
-            hotelMarker.bindPopup(hotel.DESCRIPTION);
+            hotelMarker.bindPopup(`<center><table>
+                                    <tr><th>${hotel.DESCRIPTION[4].key}: </th><td>${hotel.DESCRIPTION[4].value}</td></th>
+                                    <tr><th>${hotel.DESCRIPTION[3].key}: </th><td>${hotel.DESCRIPTION[3].value}</td></th>
+                                    <tr><th>${hotel.DESCRIPTION[2].key}: </th><td>${hotel.DESCRIPTION[2].value}</td></th>               
+                                    <tr><th>${hotel.DESCRIPTION[1].key}: </th><td>${hotel.DESCRIPTION[1].value}</td></th> 
+                                    <tr><th>Email: </th><td>${hotel.DESCRIPTION[0].value}</td></th>
+                                    </center></table>
+                                    `);
             hotelMarker.addTo(hotelLayer);
         }
         hotelLayer.addTo(map);

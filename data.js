@@ -37,22 +37,26 @@ async function getCovidClusterList(url) {
 }
 
 // a function to convert 1st letter to cap for each word, used to standardize address
-function firstLetterCap(address) {
-    if (typeof address !== 'undefined') {
-        let array = address.split(' ');
-        let newArray = [];
-        for (let a of array) {
-            if (/^[a-zA-Z]$/.test(a[0])) {
-                let newWord = a[0].toUpperCase() + a.substring(1).toLowerCase();
-                newArray.push(newWord);
-            } else {
-                newArray.push(a);
+function firstLetterCap(str) {
+    if (typeof str !== 'undefined') {
+        let array = str.split(' ');
+        if (array.length > 1) {
+            let newArray = [];
+            for (let a of array) {
+                if (/^[a-zA-Z]$/.test(a[0])) {
+                    let newWord = a[0].toUpperCase() + a.substring(1).toLowerCase();
+                    newArray.push(newWord);
+                } else {
+                    newArray.push(a);
+                }
             }
+            let newAddress = newArray.join(' ');
+            return newAddress;
+        } else {
+            return str;
         }
-        let newAddress = newArray.join(' ');
-        return newAddress;
     } else {
-        return address;
+        return str;
     }
 }
 
@@ -153,9 +157,46 @@ function cleanseName(rawHotelName) {
     return cleanName;
 }
 
-// a function to extract raw data from XML list of hotels by STB and create an array of objects, each object contains essential info of 1 hotel
-async function fromXML(url) {
+// a function to parse CDATA text content from XML file and convert to HTML table of relevant info
+function cdataToHTML(cdata, filename) {
+    let parser = new DOMParser();
+    let element = parser.parseFromString(cdata, 'text/html');
+    let tableArray = Array.from(element.querySelectorAll('tr'));
+    // filter to get an array of relevant HTML elements only, map to an array of objects
+    let filteredTable = [];
+    let mappedTable = [];
+    switch (filename) {
+        case 'hotel':
+            filteredTable = tableArray.filter(function(row) {
+                return /(HYPERLINK|POSTALCODE|TOTALROOMS|ADDRESS|^NAME)/.test(row.firstElementChild.innerText)
+            });
+            mappedTable = filteredTable.map(function(row) {
+                return {
+                    key: firstLetterCap(row.children[0].innerText),
+                    value: firstLetterCap(row.children[1].innerText)
+                }
+            });
+            break;
+        case 'dengue':
+            filteredTable = tableArray.filter(function(row) {
+                return /(NAME|LOCALITY|CASE_SIZE)/.test(row.firstElementChild.innerText)
+            });
+            mappedTable = filteredTable.map(function(row) {
+                return {
+                    key: firstLetterCap(row.children[0].innerText),
+                    value: firstLetterCap(row.children[1].innerText)
+                }
+            });
+            break;
+        default:
+            console.log('filename is not matched to hotel or dengue');
+    }
 
+    return mappedTable;
+}
+
+// a function to convert XML list of hotels by STB to an array of objects, each object contains essential info of 1 hotel
+async function fromXML(url) {
     let response = await axios.get(url, { responseType: 'document' });
     let xmlDoc = response.data;
     let xmlHotelList = Array.from(xmlDoc.documentElement.children[0].children[3].children);
@@ -182,7 +223,7 @@ async function fromXML(url) {
         coordinatesLngLat[1] = parseFloat(coordinatesLatLng[0]);
         oneHotel.COORDINATES = coordinatesLngLat;
         // get hotel description/ CDATA
-        oneHotel.DESCRIPTION = hotel.children[2].textContent;
+        oneHotel.DESCRIPTION = cdataToHTML(hotel.children[2].textContent, 'hotel');
         // add the hotel object to hotelList array
         stbHotelList.push(oneHotel);
     }
