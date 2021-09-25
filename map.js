@@ -56,13 +56,13 @@ window.addEventListener('DOMContentLoaded', async function() {
         let hotelLayer = L.markerClusterGroup();
         for (let hotel of hotelList) {
             let hotelMarker = L.marker(hotel.COORDINATES);
-            hotelMarker.bindPopup(`<center><table>
-                                    <tr><th>${hotel.DESCRIPTION[4].key}: </th><td>${hotel.DESCRIPTION[4].value}</td></th>
+            hotelMarker.bindPopup(`<table>
+                                    <tr><th>Hotel ${hotel.DESCRIPTION[4].key}: </th><td>${hotel.DESCRIPTION[4].value}</td></th>
                                     <tr><th>${hotel.DESCRIPTION[3].key}: </th><td>${hotel.DESCRIPTION[3].value}</td></th>
                                     <tr><th>${hotel.DESCRIPTION[2].key}: </th><td>${hotel.DESCRIPTION[2].value}</td></th>               
                                     <tr><th>${hotel.DESCRIPTION[1].key}: </th><td>${hotel.DESCRIPTION[1].value}</td></th> 
                                     <tr><th>Email: </th><td>${hotel.DESCRIPTION[0].value}</td></th>
-                                    </center></table>
+                                    </table>
                                     `);
             hotelMarker.addTo(hotelLayer);
         }
@@ -88,7 +88,7 @@ window.addEventListener('DOMContentLoaded', async function() {
         })
         covidCluster.addTo(map);
         covidCluster.bindPopup(`<table>
-                                <tr><th>Cluster Name: </th><td>${c.ClusterName}</td></tr>
+                                <tr><th>Covid-19 Cluster Name: </th><td>${c.ClusterName}</td></tr>
                                 <tr><th>Address: </th><td>${c.Address[0].address}</td></tr>
                                 <tr><th>New Cases on ${newCaseDate}: </th><td>${c.NumberOfNewCases}</td></tr>
                                 <tr><th>Total Cases by ${newCaseDate}: </th><td>${c.TotalCases}</td></tr>
@@ -100,7 +100,16 @@ window.addEventListener('DOMContentLoaded', async function() {
     let response = await axios.get('data-source/dengue-clusters-geojson.geojson');
     let dengueClusterLayer = L.geoJson(response.data, {
         onEachFeature: function(feature, layer) {
-            layer.bindPopup(feature.properties.Description);
+            let cdata = cdataToHTML(feature.properties.Description, 'dengue');
+            // convert FMEL_UPD_D string to date string
+            let rawDateString = cdata[3].value.substring(0, 8);
+            let newDateFormat = new Date(`${rawDateString.slice(0,4)}/${rawDateString.slice(4,6)}/${rawDateString.slice(6,8)}`);
+            let newDateString = newDateFormat.toDateString().substring(4);
+            layer.bindPopup(`<table>
+                            <thead><strong>${cdata[2].value}</strong></thead>
+                            <tr><th>Area: </th><td>${cdata[0].value}</td></tr>
+                            <tr><th>Total Cases by ${newDateString}: </th><td>${cdata[1].value}</td></tr>
+                            </table>`);
         }
     }).addTo(map);
 

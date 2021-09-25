@@ -40,7 +40,7 @@ async function getCovidClusterList(url) {
 function firstLetterCap(str) {
     if (typeof str !== 'undefined') {
         let array = str.split(' ');
-        if (array.length > 1) {
+        if (!array[0].includes('@')) {
             let newArray = [];
             for (let a of array) {
                 if (/^[a-zA-Z]$/.test(a[0])) {
@@ -179,7 +179,7 @@ function cdataToHTML(cdata, filename) {
             break;
         case 'dengue':
             filteredTable = tableArray.filter(function(row) {
-                return /(NAME|LOCALITY|CASE_SIZE)/.test(row.firstElementChild.innerText)
+                return /(NAME|LOCALITY|CASE_SIZE|FMEL_UPD_D)/.test(row.firstElementChild.innerText)
             });
             mappedTable = filteredTable.map(function(row) {
                 return {
