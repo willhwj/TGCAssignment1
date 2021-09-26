@@ -21,8 +21,13 @@ window.addEventListener('DOMContentLoaded', async function() {
 
     const searchControl = L.esri.Geocoding.geosearch({
         position: "topright",
-        placeholder: "Enter an address or place e.g. 1 Paya Lebar",
-        useMapBounds: false,
+        zoomToResult: true,
+        placeholder: "Enter an address or place e.g. Chinatown Complex",
+        useMapBounds: true,
+        expanded: false,
+        collapseAfterResult: true,
+        allowMultipleResults: true,
+        searchBounds: null,
         providers: [L.esri.Geocoding.arcgisOnlineProvider({
             apikey: apiKey,
             nearby: {
@@ -75,7 +80,7 @@ window.addEventListener('DOMContentLoaded', async function() {
 
     // add a layer group of covid clusters
     let clusterwithDate = await getCovidClusterList('data-source/covid-clusters23Sep2021.csv');
-    console.log('covidclusters object is ', clusterwithDate);
+    // console.log('covidclusters object is ', clusterwithDate);
     let newCaseDate = clusterwithDate.date;
     let covidClusterList = clusterwithDate.clusterList;
     let covidClusterLayer = L.markerClusterGroup();
@@ -116,13 +121,13 @@ window.addEventListener('DOMContentLoaded', async function() {
 
     // create a layer control on the map
     let baseLayer = {
-        "All Hotels": allHotelsLayer,
         'Staycation Hotels': staycayHotelsLayer,
         'Stay-Home-Notice(SHN) Hotels': shnHotelsLayer,
         'Non-SHN Staycation Hotels': nonShnStaycayLayer
     };
 
     let overLay = {
+        "All Hotels": allHotelsLayer,
         'Dengue Clusters': dengueClusterLayer,
         'COVID-19 Clusters': covidClusterLayer
     }

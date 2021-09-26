@@ -145,17 +145,22 @@ async function getAddressCovidCluster(clusterName) {
 function cleanseName(rawHotelName) {
     let cleanName = rawHotelName.toLowerCase();
 
-    let regExp1 = new RegExp(/(singapore|sentosa|resorts world sentosa|the|hotels*|collections*[\w\s]*|autograph|pte ltd)/, 'g');
+    let regExp1 = new RegExp(/singapore|a tribute portfolio|sentosa|resorts world sentosa|and|resorts|the|hotels*|collections*[\w\s]*|autograph|pte ltd|at/, 'g');
     cleanName = cleanName.replace(regExp1, '');
 
-    let regExp2 = new RegExp(/ (by)[\s][\w\s]+/, 'g');
+    let regExp2 = new RegExp(/ by\s[a-z]+/, 'g');
     cleanName = cleanName.replace(regExp2, ' ');
 
-    let regExp3 = new RegExp(/[\s-–,'’@s!().]+/, 'g');
+    let regExp3 = new RegExp(/[\s-–,@!().]+/, 'g');
     cleanName = cleanName.replace(regExp3, '');
+
+    // let regExp4 = new RegExp(/ /, 'g');
+    cleanName = cleanName.replace(/['’]/, `'`);
 
     return cleanName;
 }
+
+console.log(cleanseName('XY HOTEL BUGIS by ASANDA HOTELS AND RESORTS'));
 
 // a function to parse CDATA text content from XML file and convert to HTML table of relevant info
 function cdataToHTML(cdata, filename) {
@@ -247,7 +252,7 @@ async function getCoordinates(targetURL, allHotelList, listName) {
                 let cleanTargetName = cleanseName(s['Hotel Name']);
                 let cleanStbName = cleanseName(h.NAME);
 
-                if (cleanTargetName === cleanStbName || cleanTargetName.includes(cleanStbName) || cleanStbName.includes(cleanTargetName)) {
+                if (cleanTargetName === cleanStbName || (cleanTargetName.length > 1 && cleanTargetName.length < 4 && cleanStbName.includes(cleanTargetName))) {
                     matched = true;
                     let matchedHotel = {};
                     matchedHotel.NAME = h.NAME;
@@ -272,8 +277,9 @@ async function getCoordinates(targetURL, allHotelList, listName) {
             }
         }
     }
-    // console.log('after for loop, matched hotelList is ', hotelList);
-    // console.log('unmatchedHotels is ', unmatchedHotels);
+    console.log('before matching, target hotel list is ', hotelsRaw);
+    console.log('after for loop, matched hotelList is ', hotelList);
+    console.log('unmatchedHotels is ', unmatchedHotels);
     return hotelList;
 };
 
@@ -285,7 +291,6 @@ async function getMasterHotelLists() {
     const nonShnStaycay = all.filter(function(hotel) {
         return Boolean(hotel.STAYCAY === 'Yes' && hotel.SHN === 'No')
     });
-    console.log(staycay);
     const masterLists = {
         all: all,
         shn: shn,
