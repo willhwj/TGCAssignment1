@@ -160,7 +160,7 @@ function cleanseName(rawHotelName) {
     return cleanName;
 }
 
-console.log(cleanseName('XY HOTEL BUGIS by ASANDA HOTELS AND RESORTS'));
+// console.log(cleanseName('XY HOTEL BUGIS by ASANDA HOTELS AND RESORTS'));
 
 // a function to parse CDATA text content from XML file and convert to HTML table of relevant info
 function cdataToHTML(cdata, filename) {
@@ -277,9 +277,9 @@ async function getCoordinates(targetURL, allHotelList, listName) {
             }
         }
     }
-    console.log('before matching, target hotel list is ', hotelsRaw);
-    console.log('after for loop, matched hotelList is ', hotelList);
-    console.log('unmatchedHotels is ', unmatchedHotels);
+    // console.log('before matching, target hotel list is ', hotelsRaw);
+    // console.log('after for loop, matched hotelList is ', hotelList);
+    // console.log('unmatchedHotels is ', unmatchedHotels);
     return hotelList;
 };
 

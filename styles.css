@@ -1,5 +1,75 @@
+/* general stylling */
+
+#logo {
+    width: auto;
+    max-height: 40px;
+    height: 100%;
+}
+
 #map {
-    height: 800px;
+    height: 88vh;
     width: auto;
     margin: 10px;
+    /* z-index: 0; */
+}
+
+.navbar-toggler {
+    background-color: #d9d6df;
+}
+
+.nav-item {
+    /* background-color: #f0c3ac; */
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.nav-item:hover {
+    background-color: #EAECEF;
+}
+
+
+/* stylling for Single-Page Application */
+
+.page {
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+#mapPage {
+    background-color: aliceblue;
+    width: 100%;
+}
+
+#howToPage {
+    background-color: blanchedalmond;
+    width: 100%;
+    /* z-index: 100; */
+}
+
+#covidPage {
+    background-color: cornsilk;
+    width: 100%;
+}
+
+#denguePage {
+    background-color: turquoise;
+    width: 100%;
+}
+
+#allPages {
+    position: relative;
+}
+
+.page {
+    height: 100vh;
+    box-sizing: border-box;
+    position: absolute;
+}
+
+.hidden {
+    transform: translateX(-100%);
+}
+
+.show {
+    transform: translateX(0);
 }

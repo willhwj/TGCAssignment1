@@ -35,69 +35,152 @@
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
     <script src="map.js"></script>
     <script src="data.js"></script>
-    <script scr="script.js"></script>
+    <script src="script.js"></script>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="/images/navbar.png" alt="" width="50" height="40">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">About This Website</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Data Sources</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">How to Use</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Dengue Fever</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">COVID-19</a>
-                    </li>
-                    <liv class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Stay-Home-Notice Hotels</a>
-                    </liv>
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
+    <div class="container m-0 py-0 h-0">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light m-0 py-0 h-0" id="navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="/images/navbar.png" alt="" id="logo">
                 </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li> -->
-                    <!-- <li class="nav-item">
-                        <a class="nav-link disabled">Disabled</a>
-                    </li> -->
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="hamburger">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item" id="mapPageBtn">
+                            <a class="nav-link active text-dark" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#" id="howToPageBtn">How to Use</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                About
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li id="covidPageBtn"><a class="dropdown-item fs-15" href="#">COVID-19</a></li>
+                                <!-- <li><a class="dropdown-item fs-15" href="#">Stay Home Notice Hotels</a></li>
+                                <li><a class="dropdown-item fs-15" href="#">Staycation Approved Hotels</a></li> -->
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item fs-15" href="#" id="denguePageBtn">Dengue Fever</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item fs-15" href="#" id="dataSourcePageBtn">Data Sources</a></li>
+                            </ul>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link disabled">Disabled</a>
+                        </li> -->
+                    </ul>
+                    <!-- <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form> -->
+                </div>
             </div>
-        </div>
-    </nav>
-    <div id="map">
-
+        </nav>
     </div>
+    <div id="allPages">
+        <main class="page show" id="mapPage">
+            <div id="map">
+            </div>
+        </main>
 
+        <main class="page hidden" id="howToPage">
+            <section>
+                <h1>Why I Came Up With This Website?</h1>
+                <article>
+                    <p>
+                        COVID-19 has changed our life in many profound ways. As Singapore pivots from a strategy of ring-fencing-and-containing to co-existing with the virus, it's important that we continue living our life to the fullest, while taking all precautions to stay
+                        safe. As a lover of hotel staycations and a hospitality professional, I want to help Singapore residents to easily find hotels outside COVID-19 and dengue clusters, plan their activities and enjoy life by knowing and avoiding high-to-medium-risk
+                        areas.
+                    </p>
+                    <p>
+                        This website aims to provide Singapore residents with location-specific information on COVID-19 clusters and dengue fever clusters, and hotels approved for staycation and hotels opened for Stay-Home-Notice overseas travellers.
+                    </p>
+                    <ul>
+                        The main function is an interactive map that allows user to do the following things:
+                        <li>Click on a control to see all hotels in Singapore, hotels approved for staycation, hotels opened for overseas travelers who need to serve Stay-Home-Notice at dedicated facilities and staycation-approved hotels which are not opened
+                            for Stay-Home-Notice.</li>
+                        <li>Click on a control to see COVID-19 clusters of the recent days.</li>
+                        <li>Click on a control to see dengue clusters of the recent days.</li>
+                        <li>Search for any location, address or building in Singapore, with the map layers selected by the user, as descrbied above.</li>
+                        <li>Find links to official websites on COVID-19, dengue fevers, staycation-approved hotels and Stay-Home-Notice hotels.</li>
+                    </ul>
+                </article>
+            </section>
+            <section>
+                <h1>How To Use This Website?</h1>
+                <article>
+                    <h2>Navigation of the Website</h2>
+                    <p>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione, fuga? Ad libero debitis illum temporibus totam beatae, iure placeat ratione accusamus necessitatibus a incidunt perspiciatis nobis cumque rem facere asperiores.
+                    </p>
+                    <h2>Legions of the Map</h2>
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit incidunt exercitationem nam laborum eveniet repudiandae aspernatur ad optio iste magni quas cumque, temporibus quasi autem reprehenderit ducimus veritatis doloribus. Suscipit!
+                    </p>
+                </article>
+            </section>
+        </main>
+
+        <main class="page hidden" id="covidPage">
+            <section>
+                <h1>What is Covid-19?</h1>
+                <article>
+                    <p>Covid-19 history from wikipedia. to be updated</p>
+                    <p>continue</p>
+                </article>
+                <h1>How is Singapore dealing with Covid-19?</h1>
+                <article>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi repudiandae quo alias tempora nesciunt assumenda similique suscipit laborum. Odio delectus ut consectetur accusantium fugit ex alias excepturi aspernatur quaerat harum.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, nam cumque vero repellat pariatur aliquam quibusdam dignissimos ex saepe iusto. Laborum aliquid esse facere qui, minima tenetur quisquam non natus!</p>
+                </article>
+                <h1>What are Hotels Approved for Staycation?</h1>
+                <article>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi repudiandae quo alias tempora nesciunt assumenda similique suscipit laborum. Odio delectus ut consectetur accusantium fugit ex alias excepturi aspernatur quaerat harum.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, nam cumque vero repellat pariatur aliquam quibusdam dignissimos ex saepe iusto. Laborum aliquid esse facere qui, minima tenetur quisquam non natus!</p>
+                </article>
+                <h1>What are Hotels Opened for Stay-Home-Notice?</h1>
+                <article>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi repudiandae quo alias tempora nesciunt assumenda similique suscipit laborum. Odio delectus ut consectetur accusantium fugit ex alias excepturi aspernatur quaerat harum.</p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, nam cumque vero repellat pariatur aliquam quibusdam dignissimos ex saepe iusto. Laborum aliquid esse facere qui, minima tenetur quisquam non natus!</p>
+                </article>
+            </section>
+        </main>
+
+        <main class="page hidden" id="denguePage">
+            <section>
+                <h1>What is Dengue Fever?</h1>
+                <article>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam obcaecati unde illum accusantium, nesciunt fuga doloremque ab rem quaerat corrupti odio, incidunt maiores ad placeat ex labore, repudiandae nobis in?</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo quis aliquid laborum dolorum cumque dolores error, fugit quod ipsam? Quidem nihil ex, molestiae modi magni suscipit impedit veritatis reiciendis deserunt.</p>
+                </article>
+                <h1>How is Singapore dealing with Dengue Fever?</h1>
+                <article>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam obcaecati unde illum accusantium, nesciunt fuga doloremque ab rem quaerat corrupti odio, incidunt maiores ad placeat ex labore, repudiandae nobis in?</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo quis aliquid laborum dolorum cumque dolores error, fugit quod ipsam? Quidem nihil ex, molestiae modi magni suscipit impedit veritatis reiciendis deserunt.</p>
+                </article>
+            </section>
+        </main>
+
+        <main class="page hidden" id="dataSourcePage">
+            <section>
+                <h1>Where does this Website Get its Data Sources?</h1>
+                <article>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam obcaecati unde illum accusantium, nesciunt fuga doloremque ab rem quaerat corrupti odio, incidunt maiores ad placeat ex labore, repudiandae nobis in?</p>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo quis aliquid laborum dolorum cumque dolores error, fugit quod ipsam? Quidem nihil ex, molestiae modi magni suscipit impedit veritatis reiciendis deserunt.</p>
+                </article>
+                </article>
+            </section>
+        </main>
+    </div>
 </body>
 
 </html>
