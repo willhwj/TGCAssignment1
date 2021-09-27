@@ -35,13 +35,22 @@
 }
 
 
+/* styling submenu text font size */
+
+.submenu {
+    font-size: 0.75rem;
+}
+
+
 /* stylling for Single-Page Application */
 
 .page {
-    height: 100vh;
+    min-height: 100vh;
     box-sizing: border-box;
     padding: 10px;
     background-color: cornsilk;
+    box-sizing: border-box;
+    position: absolute;
 }
 
 #mapPage {
@@ -74,18 +83,21 @@
     position: relative;
 }
 
-.page {
+
+/* .page {
     height: 100vh;
     box-sizing: border-box;
     position: absolute;
-}
+} */
 
 .hidden {
     transform: translateX(-100%);
+    display: none;
 }
 
 .show {
     transform: translateX(0);
+    display: block;
 }
 
 

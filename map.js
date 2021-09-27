@@ -59,7 +59,7 @@ window.addEventListener('DOMContentLoaded', async function() {
             shadowSize: [30, 30],
             iconAnchor: [22, 38],
             shadowAnchor: [15, 40],
-            popupAnchor: [-3, -76]
+            popupAnchor: [-3, -38]
         }
     });
 
