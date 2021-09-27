@@ -14,7 +14,9 @@
 
     <!-- Add Esri geocoder CSS script -->
     <link rel="stylesheet" href="https://unpkg.com/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/singlepageapp.css">
     <link rel="icon" href="images/favicon.png" type="image/x-icon">
 
     <!-- Add Bootstrap, axios, Leaflet, Esri Leaflet, Esri Leaflet Geocoder, marker cluster JS script -->
@@ -33,17 +35,17 @@
     </script>
 
     <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js"></script>
-    <script src="map.js"></script>
-    <script src="data.js"></script>
-    <script src="script.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
 </head>
 
 <body>
     <div class="container-fluid m-0 py-0 px-0 h-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-light m-0 py-0 h-0" id="navbar">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    <img src="/images/navbar.png" alt="" id="logo">
+                <a href="#">
+                    <img class="navbar-brand" src="/images/navbar.png" alt="" id="logo">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" id="hamburger">
                     <span class="navbar-toggler-icon"></span>
@@ -71,7 +73,8 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item submenu" href="#" id="dataSourcePageBtn">Data Sources</a></li>
+                                <li><a class="dropdown-item submenu" href="#" id="dataSourcePageBtn">Data Sources</a>
+                                </li>
                             </ul>
                         </li>
                         <!-- <li class="nav-item">
@@ -120,12 +123,22 @@
                 <article>
                     <h2>Navigation of the Website</h2>
                     <p>
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione, fuga? Ad libero debitis illum temporibus totam beatae, iure placeat ratione accusamus necessitatibus a incidunt perspiciatis nobis cumque rem facere asperiores.
+                        The homepage is an interactive map with a layer control toggle and a search box.
+                    </p>
+                    <p>
+                        Clicking on the layer control, you can see 6 different layers. 4 layers related to hotels and their status are in the primary layer group, and you can only select 1 layer from the list of 4.
+                    </p>
+                    <p>
+                        The remaining 2 layers are in the secondary layer group: one for COVID-19 clusters and the other for dengue clusters
                     </p>
                     <h2>Legions of the Map</h2>
                     <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit incidunt exercitationem nam laborum eveniet repudiandae aspernatur ad optio iste magni quas cumque, temporibus quasi autem reprehenderit ducimus veritatis doloribus. Suscipit!
+                        There are 4 icons within the map.
                     </p>
+                    <li>The icon of man on beach, also the favicon and logo of this website, represents hotels. Each hotel layer has its own shade of this icon.</li>
+                    <li>The icon of red circle represents COVID-19 clusters from the COVID-19 layer.</li>
+                    <li>The icon of blue polygon represents dengue fever clsuters from the dengue layer.</li>
+                    <li>The icon of blue inverted droplet represents location result returned from the search box.</li>
                 </article>
             </section>
         </main>
@@ -134,23 +147,42 @@
             <section>
                 <h1>What is Covid-19?</h1>
                 <article>
-                    <p>Covid-19 history from wikipedia. to be updated</p>
-                    <p>continue</p>
+                    <p>Coronavirus disease 2019 (COVID-19) is a contagious disease caused by severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2). The first known case was identified in Wuhan, China, in December 2019. The disease has since spread
+                        worldwide, leading to an ongoing pandemic.</p>
+                    <p>Symptoms of COVID-19 are variable, but often include fever, cough, headache, fatigue, breathing difficulties, and loss of smell and taste.Symptoms may begin one to fourteen days after exposure to the virus. At least a third of people
+                        who are infected do not develop noticeable symptoms. Of those people who develop symptoms noticeable enough to be classed as patients, most (81%) develop mild to moderate symptoms (up to mild pneumonia), while 14% develop severe
+                        symptoms (dyspnea, hypoxia, or more than 50% lung involvement on imaging), and 5% suffer critical symptoms (respiratory failure, shock, or multiorgan dysfunction). Older people are at a higher risk of developing severe symptoms.
+                        Some people continue to experience a range of effects (long COVID) for months after recovery, and damage to organs has been observed.Multi-year studies are underway to further investigate the long-term effects of the disease.</p>
+                    <p>The source for the above information is from <a href="https://en.wikipedia.org/wiki/COVID-19">Wikipedia</a>.</p>
                 </article>
                 <h1>How is Singapore dealing with Covid-19?</h1>
                 <article>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi repudiandae quo alias tempora nesciunt assumenda similique suscipit laborum. Odio delectus ut consectetur accusantium fugit ex alias excepturi aspernatur quaerat harum.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, nam cumque vero repellat pariatur aliquam quibusdam dignissimos ex saepe iusto. Laborum aliquid esse facere qui, minima tenetur quisquam non natus!</p>
-                </article>
-                <h1>What are Hotels Approved for Staycation?</h1>
-                <article>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi repudiandae quo alias tempora nesciunt assumenda similique suscipit laborum. Odio delectus ut consectetur accusantium fugit ex alias excepturi aspernatur quaerat harum.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, nam cumque vero repellat pariatur aliquam quibusdam dignissimos ex saepe iusto. Laborum aliquid esse facere qui, minima tenetur quisquam non natus!</p>
+                    <p>Overall Singapore is dealing well with COVID-19. Death count and case count is low comparatively. Vaccination rate is close to 85% for the general population. The government is now pivoting to gradual openning and co-existing with
+                        the virus.</p>
+                    <p>Singapore Ministry of Health updates the COVID-19 situation daily. More information can be found in its official website: <a href="https://www.moh.gov.sg/covid-19">MOH COVID-19</a>.</p>
                 </article>
                 <h1>What are Hotels Opened for Stay-Home-Notice?</h1>
                 <article>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi repudiandae quo alias tempora nesciunt assumenda similique suscipit laborum. Odio delectus ut consectetur accusantium fugit ex alias excepturi aspernatur quaerat harum.</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, nam cumque vero repellat pariatur aliquam quibusdam dignissimos ex saepe iusto. Laborum aliquid esse facere qui, minima tenetur quisquam non natus!</p>
+                    <p>Under Singapore government's current differentiated entry requirements for overseas visitors, visitors of certain profile may serve the Stay-Home-Notice of 10-14 days at home, given that their local residence fulfills certain criteria.
+                        If such travellers' local residence do not fulfill such requirements, they can serve their Stay-Home-Notice at a list of approved hotels.</p>
+                    <p>More information on Stay-Home-Notice can be found here: <a href="https://safetravel.ica.gov.sg/health/shn">ICA Stay-Home-Notice</a></p>
+                </article>
+                <h1>What are Hotels Approved for Staycation?</h1>
+                <article>
+                    <p>All the hotels were closed in Singapore during circuit breaker period in 2020, except those designated as quarantine facilities. In late 2020, hotels could apply for permission to re-open for leisure bookings, subject to stringent
+                        requirements and inspection by the government to fulfill the new safety and hygiene standards. Such hotels are colloquially called staycation-approved hotels.</p>
+                    <p>It's possible that a hotel is simultaneously approved for staycation (by Singapore residents) and for overseas travellers serving Stay-Home-Notice.</p>
+                    <p>More information can be found here in Singapore Tourism Board's website: <a href="https://www.stb.gov.sg/content/stb/en/home-pages/approved-hotels.html">STB Staycation Hotels</a></p>
+                </article>
+                <article>
+                    <h1>What's Singapore's rules for overseas visitors?</h1>
+                    <p>
+                        Singapore government adopts a highly differentiated mechanism to cater to travellers from different countries, depending on the vaccinated status of the traveller, past travel history in the 21 days before arrival, overall COVID-19 situation of the country
+                        of origin, fast-track lane arrangement etc. This is on top of visa and entry requirements.
+                    </p>
+                    <p>
+                        For details, please refer to the ICA website: <a href="https://safetravel.ica.gov.sg/arriving/overview">ICA Webiste - Safe Travel</a>
+                    </p>
                 </article>
             </section>
         </main>
@@ -159,13 +191,10 @@
             <section>
                 <h1>What is Dengue Fever?</h1>
                 <article>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam obcaecati unde illum accusantium, nesciunt fuga doloremque ab rem quaerat corrupti odio, incidunt maiores ad placeat ex labore, repudiandae nobis in?</p>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo quis aliquid laborum dolorum cumque dolores error, fugit quod ipsam? Quidem nihil ex, molestiae modi magni suscipit impedit veritatis reiciendis deserunt.</p>
-                </article>
-                <h1>How is Singapore dealing with Dengue Fever?</h1>
-                <article>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam obcaecati unde illum accusantium, nesciunt fuga doloremque ab rem quaerat corrupti odio, incidunt maiores ad placeat ex labore, repudiandae nobis in?</p>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo quis aliquid laborum dolorum cumque dolores error, fugit quod ipsam? Quidem nihil ex, molestiae modi magni suscipit impedit veritatis reiciendis deserunt.</p>
+                    <p>Dengue fever is an illness caused by the dengue virus, transmittable only through the bite of an infected Aedes mosquito. Unfortunately, the Aedes mosquito is one of the most common types of mosquito found in Singapore, and the dengue
+                        fever epidemic remains a perennial issue.</p>
+                    <p>Dengue symptoms include a fever (which can last up to 7 days), accompanied by intense headache, body aches, joint pains, loss of appetite, nausea, vomiting and skin rashes. Complete recovery can take up to a month.</p>
+                    <p>More information can be found here at HealthXchange.sg by Singapore Health Promotion Board<a href="https://www.healthxchange.sg/men/health-scares-outbreaks/dengue-fever-symptoms-prevention">HealthXchange Dengue Fever</a></p>
                 </article>
             </section>
         </main>
@@ -174,16 +203,15 @@
             <section>
                 <h1>Where does this Website Get its Data Sources?</h1>
                 <article>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam obcaecati unde illum accusantium, nesciunt fuga doloremque ab rem quaerat corrupti odio, incidunt maiores ad placeat ex labore, repudiandae nobis in?</p>
-                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo quis aliquid laborum dolorum cumque dolores error, fugit quod ipsam? Quidem nihil ex, molestiae modi magni suscipit impedit veritatis reiciendis deserunt.</p>
+                    <p>COVID-19 clusters are from daily update of MOH: <a href="https://www.gov.sg/COVID-19">MOH COVID-19</a></p>
+                    <p>Dengue clusters and the full list of properties with hotel licenses are from Singapore government's data registry <a href="https://data.gov.sg/">Singapore's Public Data</a></p>
+                    <p>List of Stay-Home-Notice hotels is from Singapore Hotel Association website: <a href="https://sha.org.sg/stay-home-notice">SHA Stay-Home-Notice Hotels</a></p>
+                    <p>List of staycation-approved hotels is from Singapore Tourism Board website: <a href="https://www.stb.gov.sg/content/stb/en/home-pages/approved-hotels.html">STB Staycation Approved Hotels</a></p>
                 </article>
                 </article>
             </section>
         </main>
     </div>
-    <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestias, nisi quasi voluptatibus aperiam ipsum ex numquam porro! Fuga, repudiandae voluptatem sapiente odio doloremque dolorem consequuntur ea iste nam maiores dolores.
-    </p>
 </body>
 
 </html>

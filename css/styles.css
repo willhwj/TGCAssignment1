@@ -1,0 +1,66 @@
+/* general stylling */
+
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+#logo {
+    width: auto;
+    /* max-height: 40px; */
+    /* height: 100%; */
+}
+
+#logo:hover {
+    width: auto;
+    /* max-height: 41px; */
+    height: 100%;
+    background-color: #eaecef;
+}
+
+#map {
+    height: 88vh;
+    width: auto;
+    margin: 10px;
+}
+
+.navbar-toggler {
+    background-color: #d9d6df;
+}
+
+.navbar-toggler-icon {
+    background-image: url("images/hamburger-menu.png");
+}
+
+.nav-item {
+    /* background-color: #f0c3ac; */
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.nav-item:hover {
+    background-color: #eaecef;
+}
+
+
+/* styling submenu text font size */
+
+.submenu {
+    font-size: 0.75rem;
+}
+
+
+/* style tables in Leaflet popup */
+
+table.hotel {
+    border: 1px solid black;
+    table-layout: fixed;
+    width: 400px;
+}
+
+th,
+td {
+    border: 1px solid black;
+    width: 200px;
+    overflow: hidden;
+    padding: 3px;
+}

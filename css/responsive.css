@@ -1,0 +1,49 @@
+/*define media query breakpoints for responsive design  */
+
+@media only screen and (max-width: 600px) {
+    #logo,
+    #hamburger,
+    .navbar-toggler-icon {
+        max-height: 40px;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    #logo,
+    #hamburger,
+    .navbar-toggler-icon {
+        max-height: 50px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #logo,
+    #hamburger,
+    .navbar-toggler-icon {
+        max-height: 60px;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    #logo,
+    #hamburger,
+    .navbar-toggler-icon {
+        max-height: 70px;
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    #logo,
+    #hamburger,
+    .navbar-toggler-icon {
+        max-height: 80px;
+    }
+}
+
+@media only screen and (min-width: 1500px) {
+    #logo,
+    #hamburger,
+    .navbar-toggler-icon {
+        max-height: 80px;
+    }
+}

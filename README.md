@@ -22,55 +22,47 @@ A live website of the application can be found here: TBC.
 ## (i) Project Strategy
 Following closely the objectives of this interactive map web application (i.e. to provide unstructured pandemic/endemic data into a visual map for easy selection and searching), these user goals were identified and served as guidelines for the features that were implemented.
 
-
 User Stories | Features
 -------------|-------------
 User wants to see all Singapore properties with hotel licenses on the map and their basic info. | When the appropriate layer is selected, Singapore hotels are displayed as custom markers on map. Once a marker is clicked, basic info is displayed as popup.
 User wants to see all hotels eligible to accommodate overseas travellers served Stay-Home-Notice on map and their basic info. | When the appropriate layer is selected, Stay-Home-Notice hotels are displayed as custom markers on map. Once a marker is clicked, basic info is displayed as popup.
 User wants to see all hotels approved for leisure purpose/staycation by Singapore residents on map and their basic info. | When the appropriate layer is selected, Staycation-approved hotels are displayed as custom markers on map. Once a marker is clicked, basic info is displayed as popup.
-User wants to see all hotels approved for staycation yet not stay-home on map and their basic info. | When the appropriate layer is selected, Stay-Home-Notice hotels are displayed as custom markers on map. Once a marker is clicked, basic info is displayed as popup.
+User wants to see all hotels approved for staycation yet not designated for stay-home-notice on map and their basic info. | When the appropriate layer is selected, such hotels are displayed as custom markers on map. Once a marker is clicked, basic info is displayed as popup.
+User can search for a location, address or building name in Singapore, and see it on map in relation to COVID-19 clusters, dengue clusters and/or any of the hotel layers.| A search box is hoisted on the map. Once a text is entered into the search box, the results will be returned and displayed on the map
+User can find out more about dengue, covid-19 and Singapore's policies for staycation approved hotels and Stay-Home-Notice hotels | Brief writeup on dengue, covid-19 and Singapore's hotel policies for staycation and Stay-Home-Notice can be found in the web application, with links to external official websites.
 
-User wants to upload photo to application.	Form to facilitate uploading of files. (Create)
-User wants to give uploaded photo a caption and hashtags.	Form to capture user input and process to update database. (Create)
-User wants to view uploaded photo with relevant fields.	Display photos back to user in an organised manner. (Read)
-User wants to edit photo name, photo caption and hashtags.	Form to capture user edits to photo fields and process to update database. (Update)
-User wants to delete an uploaded photo.	Process to soft delete photo from database. (Delete)
-User accidentally deletes uploaded photo.	Deletion confirmation form to double check if user wants to continue with delete.
-User wants to create an album.	Form to capture user input for album name and description. (Create)
-User wants to see all the created albums.	Display all albums in the database to user in a organised manner. (Read)
-User wants to upload photo to album.	Form to allow user to select album to upload to.
-User wants to edit album name and description.	Form to capture user edits to album fields and process to update database. (Update)
-User wants to delete album.	Process to soft delete album from database. (Delete)
-User accidentally deletes album.	Deletion confirmation form to double check if user wants to continue with delete.
-(ii) Project Scope
-The project skeleton and structure (wireframes) can be found here.
+## (ii) Project Scope
+The project skeleton and UI layout (wireframes) can be found here. TBC
 
-(iii) Design
+## (iii) Design
 The bootstrap framework was used in for the front-end development of the website as it allows for mobile responsive design and easy grid layout.
 
-As the name of the web application suggests, 'Banarama', the colour palette and general design of the website takes after the colours of a banana (i.e. yellow, brown, black and green). As the focus of the project is a data-centric one, the layout of the webpage is not overly complex. Animated gifs were added to the website to enhance the visual experience of users.
+As the name of the web application suggests, 'Staycay Safely', the colour palette and general design of the website takes after the colours of a light-hearted, cheerful staycation. As the focus of the project is to convert unstructured data published by the government on static websites into visual icons on a map, the layout of the webpage is straightforward and map interactivity is intuitive.
 
+TBC
 #ffe261 #ffe261 #733214 #733214 #363531 #363531 #10913f #10913f #f03c15 #f03c15
 
-2. Technologies Used
-HTML 5
-The project uses HTML5 to structure the content of the website.
-CSS
+# 2. Technologies Used
+* HTML 5
+The project uses HTML5 to structure the content of the website in a semantically meaningful way.
+* CSS
 The project uses CSS to add stylistic touches to the website.
-Bootstrap
-The project uses Bootstrap to structure the layout of the website (i.e. Navbar, Footer) and ensure website is mobile responsiveness.
-Flask
-The project uses the Flask web framework to develop the web application (i.e. Set up connection to MongoDB Atlas, process and validate forms and handle the uploading of files)
-Jinja 2
-The project uses Jinja2 to write conditional statements to display content blocks when certain conditions are met. Additionally, Jinja2 was used to set up template inherritance and extension of html/css files for the project.
-MongoDB Atlas
-The project uses MongoDB Atlas as a cloud database to store user data and file uploads.
-GoogleFonts
-The project uses GoogleFonts to style the typography on the website to enhance the visual experience of users.
-FontAwesome 4.7
-The project uses the icons provided by FontAwesome 4.7 alongside call-to-action buttons to enhance the user experience by making user interaction with the application more intuitive.
-Heroku
-The project uses Heroku for the deployment and management of the web application. As Heroku provides timelogs, when an error occurs, it makes easier to identity and remedy bugs.
+* Bootstrap
+The project uses Bootstrap to structure the layout of the website (e.g. Navbar) and ensure website is mobile responsiveness.
+* Javascript
+The project uses Javascript to process & match data from external data files & API calls, update HMTL and CSS, generate map and place markers. 
+* AJAX
+The project uses AJAX extensively to pull data from 8 different data sources: 3 unstructured CSV files, 1 GeoJson file, 1 XML file, 3 API services from 3 map/location service providers - ArcGis, FourSquare and OneMap by Singapore government.
+* DOM Manipulation and CSS Modification
+The project manipulates DOM and deploys different CSS styling to achieve the effect of single page application.
+* Regular Expression
+The project uses regular expression extensively to cleanse hotel names from the 3 unstructured CSV data files grabbed from Singapore government's websites (MOH website for Covid-19 clusters, STB website for staycation-approved hotels, ICA/Singapore Hotel Association website for Stay-Home-Notice hotels) against the structured XML file, and populate each hotel with information from the structured XML file. The 3 unstructured CSV files do not have any unique identifiers like postal code, address or any ID. Name is the only common denominator.
+* Leaflet library
+The project uses Leaflet library to generate map, create multiple layers & layer control, display markers, circles & polygons on the map, based on user selection.
+* ArcGIS Geo-search Service
+The project uses ArcGIS geo-search service to insert a contextualized search box for location, buildings and addresses in Singapore.
+
+
 3. Future Features To Implement
 A feature for users to drag and drop files for uploads
 Bulk uploading of files
