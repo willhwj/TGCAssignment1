@@ -13,7 +13,7 @@ A live website of the application can be found here: TBC.
 1. UX
 2. Technologies Used
 3. Future Features To Implement
-4. Testing
+4. Testing/ Test Cases
 5. Known Bugs
 6. Deployment
 7. Credits and Acknoledgement
@@ -50,7 +50,7 @@ The project uses CSS to add stylistic touches to the website.
 * Bootstrap
 The project uses Bootstrap to structure the layout of the website (e.g. Navbar) and ensure website is mobile responsiveness.
 * Javascript
-The project uses Javascript to process & match data from external data files & API calls, update HMTL and CSS, generate map and place markers. 
+The project uses vanilla Javascript to process & match data from external data files & API calls, update HMTL and CSS, generate map and place markers. 
 * AJAX
 The project uses AJAX extensively to pull data from 8 different data sources: 3 unstructured CSV files, 1 GeoJson file, 1 XML file, 3 API services from 3 map/location service providers - ArcGis, FourSquare and OneMap by Singapore government.
 * DOM Manipulation and CSS Modification
@@ -63,7 +63,25 @@ The project uses Leaflet library to generate map, create multiple layers & layer
 The project uses ArcGIS geo-search service to insert a contextualized search box for location, buildings and addresses in Singapore.
 
 
-3. Future Features To Implement
-A feature for users to drag and drop files for uploads
-Bulk uploading of files
-Drag and drop files between albums
+# 3. Future Features To Implement
+* a feature to display covid clusters by date
+* a series of synchronized APEX charts to display Singapore's daily covid-19 case count & death count, total case count and death count
+* a feature to indicate the size of covid cluster of the depth of color of the circle
+
+# 4. Testing & Test Cases
+
+# 5. Known Bugs
+
+# 6. Deployment
+
+# 7. Credits and Acknowledge
+## Credits
+* Four Square place API
+* Leaflet library
+* ArcGIS search API, ArcGIS geocode service
+* OneMap API
+* data source from various agencies and statutory boards of Singapore government: STB, MOH, ICA, data.gov.sg
+* Bootstrap framework
+* Mapbox tiling API
+* Axios library
+* Man-on-beach icon is from https://icons8.com/icon/ 

@@ -1,8 +1,32 @@
-// a function to extract raw data from csv file into an array of hotel names
+// a utility function to extract raw data from csv file into an array of hotel names
 async function fromCSV(url) {
     let response = await axios.get(url);
     let output = await csv().fromString(response.data);
     return output;
+}
+
+// a utility function to convert 1st letter to cap for each word, used to standardize address
+function firstLetterCap(str) {
+    if (typeof str !== 'undefined') {
+        let array = str.split(' ');
+        if (!array[0].includes('@')) {
+            let newArray = [];
+            for (let a of array) {
+                if (/^[a-zA-Z]$/.test(a[0])) {
+                    let newWord = a[0].toUpperCase() + a.substring(1).toLowerCase();
+                    newArray.push(newWord);
+                } else {
+                    newArray.push(a);
+                }
+            }
+            let newAddress = newArray.join(' ');
+            return newAddress;
+        } else {
+            return str;
+        }
+    } else {
+        return str;
+    }
 }
 
 // a function to convert return of fromCSV function into an array of covid clusters
@@ -36,30 +60,6 @@ async function getCovidClusterList(url) {
     return finalObj;
 }
 
-// a function to convert 1st letter to cap for each word, used to standardize address
-function firstLetterCap(str) {
-    if (typeof str !== 'undefined') {
-        let array = str.split(' ');
-        if (!array[0].includes('@')) {
-            let newArray = [];
-            for (let a of array) {
-                if (/^[a-zA-Z]$/.test(a[0])) {
-                    let newWord = a[0].toUpperCase() + a.substring(1).toLowerCase();
-                    newArray.push(newWord);
-                } else {
-                    newArray.push(a);
-                }
-            }
-            let newAddress = newArray.join(' ');
-            return newAddress;
-        } else {
-            return str;
-        }
-    } else {
-        return str;
-    }
-}
-
 // a function to get list of address candidates for one covid cluster
 async function getAddressCovidCluster(clusterName) {
     let addressList = [];
@@ -88,7 +88,6 @@ async function getAddressCovidCluster(clusterName) {
     }
     // if no result, 2nd search via Esri Arcgis API
     else {
-        // console.log('enter 2nd search via Esri');
         endpoint = 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?';
         response = await axios.get(endpoint, {
             params: {
@@ -113,7 +112,6 @@ async function getAddressCovidCluster(clusterName) {
         }
         //  if no result, 3rd search via FourSquare API 
         else {
-            // console.log('enter 3rd search via FourSquare');
             endpoint = 'https://api.foursquare.com/v2/venues/search';
             response = await axios.get(endpoint, {
                 params: {
@@ -141,7 +139,7 @@ async function getAddressCovidCluster(clusterName) {
     return addressList;
 }
 
-// a function to cleanse hotel name for better matching - remove the following: Singapore, dash(-), comma(,), resorts world sentosa, convert all to small letters.
+// a utility function to cleanse hotel name for better matching - remove the following: Singapore, dash(-), comma(,), resorts world sentosa, convert all to small letters.
 function cleanseName(rawHotelName) {
     let cleanName = rawHotelName.toLowerCase();
 
@@ -154,13 +152,10 @@ function cleanseName(rawHotelName) {
     let regExp3 = new RegExp(/[\s-–,@!().]+/, 'g');
     cleanName = cleanName.replace(regExp3, '');
 
-    // let regExp4 = new RegExp(/ /, 'g');
     cleanName = cleanName.replace(/['’]/, `'`);
 
     return cleanName;
 }
-
-// console.log(cleanseName('XY HOTEL BUGIS by ASANDA HOTELS AND RESORTS'));
 
 // a function to parse CDATA text content from XML file and convert to HTML table of relevant info
 function cdataToHTML(cdata, filename) {
@@ -277,9 +272,7 @@ async function getCoordinates(targetURL, allHotelList, listName) {
             }
         }
     }
-    // console.log('before matching, target hotel list is ', hotelsRaw);
-    // console.log('after for loop, matched hotelList is ', hotelList);
-    // console.log('unmatchedHotels is ', unmatchedHotels);
+    console.log('unmatchedHotels is ', unmatchedHotels);
     return hotelList;
 };
 
@@ -297,6 +290,5 @@ async function getMasterHotelLists() {
         staycay: staycay,
         nonShnStaycay: nonShnStaycay
     };
-    // console.log('masterHotelLists is ', masterLists);
     return masterLists;
 }

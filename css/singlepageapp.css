@@ -1,50 +1,44 @@
-            /* stylling for Single-Page Application */
-            
-            .page {
-                min-height: 100vh;
-                box-sizing: border-box;
-                padding: 10px;
-                background-color: cornsilk;
-                box-sizing: border-box;
-                position: absolute;
-            }
-            
-            #mapPage {
-                /* background-color: aliceblue; */
-                width: 100%;
-            }
-            
-            #howToPage {
-                /* background-color: blanchedalmond; */
-                width: 100%;
-                /* z-index: 100; */
-            }
-            
-            #covidPage {
-                /* background-color: cornsilk; */
-                width: 100%;
-            }
-            
-            #denguePage {
-                /* background-color: turquoise; */
-                width: 100%;
-            }
-            
-            #dataSourcePage {
-                /* background-color: blanchedalmond; */
-                width: 100%;
-            }
-            
-            #allPages {
-                position: relative;
-            }
-            
-            .hidden {
-                transform: translateX(-100%);
-                display: none;
-            }
-            
-            .show {
-                transform: translateX(0);
-                display: block;
-            }
+/* stylling for Single-Page Application */
+
+.page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: #fff8dc;
+    box-sizing: border-box;
+    position: absolute;
+}
+
+#mapPage {
+    width: 100%;
+}
+
+#howToPage {
+    width: 100%;
+}
+
+#covidPage {
+    width: 100%;
+}
+
+#denguePage {
+    width: 100%;
+}
+
+#dataSourcePage {
+    width: 100%;
+}
+
+#allPages {
+    position: relative;
+}
+
+.hidden {
+    transform: translateX(-100%);
+    display: none;
+}
+
+.show {
+    transform: translateX(0);
+    display: block;
+}
