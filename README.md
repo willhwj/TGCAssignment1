@@ -39,8 +39,13 @@ The bootstrap framework was used in for the front-end development of the website
 
 As the name of the web application suggests, 'Staycay Safely', the colour palette and general design of the website takes after the colours of a light-hearted, cheerful staycation. As the focus of the project is to convert unstructured data published by the government on static websites into visual icons on a map, the layout of the webpage is straightforward and map interactivity is intuitive.
 
-TBC
-#ffe261 #ffe261 #733214 #733214 #363531 #363531 #10913f #10913f #f03c15 #f03c15
+Colors used:
+#FFF8DC  #eaecef  #d9d6df  #eaecef
+All these are light, warm colors that fit well with short, delightful and light-hearted staycations.
+
+Topography used:
+Verdana, Geneva, Tahoma, sans-serif;
+This font series is among the most commonly used and hence most familiar to the general public. Verdana is professional looking without appearing too formal, perfect for fact-based presentation.
 
 # 2. Technologies Used
 * HTML 5
@@ -69,10 +74,21 @@ The project uses ArcGIS geo-search service to insert a contextualized search box
 * a feature to indicate the size of covid cluster of the depth of color of the circle
 
 # 4. Testing & Test Cases
+Test Case Description | Result
+----------------------|-----------
+To test the website is mobile responsive, that map, text and nav bar resize according to the viewing device | pass
+The single-page application changes display according to user interaction on the menu, while staying on the same HMTL page | pass
+The interactive map displays different markers, circles and polygons according to the layers selected by the user | pass
+The markers, circles and polygons on map display popup with well-sized HTML table showing appropriate data from the data files, when being clicked | pass
+The search box is able to populate location candidates based on user input | pass
+The search box is able to produce a marker on the input corresponding to the user input | pass
 
 # 5. Known Bugs
+* the 3 lines in hamburger menu does not adjust in size according to screen size. All the rest components are responsive.
+* marker pinged by the ArcGIS search box does not disappear when the user clicks elsewhere
 
 # 6. Deployment
+The project is stored in Github and deployed to Github Pages. 
 
 # 7. Credits and Acknowledge
 ## Credits
@@ -85,3 +101,9 @@ The project uses ArcGIS geo-search service to insert a contextualized search box
 * Mapbox tiling API
 * Axios library
 * Man-on-beach icon is from https://icons8.com/icon/ 
+## Acknowledgement
+This project, while still a MVP with many iterations of enhancements ahead of its release to the public, is functional and bridges a gap in the current Singapore society - lack of map-based presentation of covid clusters and hotel locations in relation to its status of staycation & stay-home-notice. This project would not be possible without the generous support and timely guidance from the following individuals from Trent Global College:
+### Paul for his highly comprehensible web development course and teaching, magical touch on problem-solving.
+### Sam for his vast knowledge on all key technologies used in this project, generous support in troubleshooting and timely advice.
+### Alex for his constant encouragement and just-in-time pep talk.
+### All fellow learners from batch 14 for your camaraderie, for inspiring me to do better and work harder, for pointing me to quick fixes & tips, and most importantly, for the great company in this learning journey. 
