@@ -6,6 +6,13 @@
     height: 100%;
 }
 
+#logo:hover {
+    width: auto;
+    max-height: 41px;
+    height: 100%;
+    background-color: #EAECEF;
+}
+
 #map {
     height: 88vh;
     width: auto;
@@ -33,26 +40,33 @@
 .page {
     height: 100vh;
     box-sizing: border-box;
+    padding: 10px;
+    background-color: cornsilk;
 }
 
 #mapPage {
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
     width: 100%;
 }
 
 #howToPage {
-    background-color: blanchedalmond;
+    /* background-color: blanchedalmond; */
     width: 100%;
     /* z-index: 100; */
 }
 
 #covidPage {
-    background-color: cornsilk;
+    /* background-color: cornsilk; */
     width: 100%;
 }
 
 #denguePage {
-    background-color: turquoise;
+    /* background-color: turquoise; */
+    width: 100%;
+}
+
+#dataSourcePage {
+    /* background-color: blanchedalmond; */
     width: 100%;
 }
 
@@ -72,4 +86,21 @@
 
 .show {
     transform: translateX(0);
+}
+
+
+/* style tables in Leaflet popup */
+
+table.hotel {
+    border: 1px solid black;
+    table-layout: fixed;
+    width: 400px
+}
+
+th,
+td {
+    border: 1px solid black;
+    width: 200px;
+    overflow: hidden;
+    padding: 3px
 }

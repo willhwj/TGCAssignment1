@@ -51,32 +51,70 @@ window.addEventListener('DOMContentLoaded', async function() {
         }
     });
 
+    // create custom markers for hotels
+    let hotelIcon = L.Icon.extend({
+        options: {
+            shadowUrl: 'images/marker-shadow.png',
+            iconSize: [38, 38],
+            shadowSize: [30, 30],
+            iconAnchor: [22, 38],
+            shadowAnchor: [15, 40],
+            popupAnchor: [-3, -76]
+        }
+    });
+
+    let allHotelIcon = new hotelIcon({ iconUrl: 'images/marker-all-hotels.png' }),
+        staycayIcon = new hotelIcon({ iconUrl: 'images/marker-staycation-hotels.png' }),
+        shnIcon = new hotelIcon({ iconUrl: 'images/marker-shn-hotels.png' }),
+        nonShnStaycayIcon = new hotelIcon({ iconUrl: 'images/marker-nonshnstaycation-hotels.png' });
+
+
     // add 4 layer group of all hotels. SHN hotels, staycay hotels, non-SHN staycay hotels.
     let masterHotelLists = await getMasterHotelLists();
 
-    function createHotelLayer(hotelList) {
+    function createHotelLayer(hotelList, fileType) {
         let hotelLayer = L.markerClusterGroup();
+        let hotelMarker = '';
         for (let hotel of hotelList) {
-            let hotelMarker = L.marker(hotel.COORDINATES);
-            hotelMarker.bindPopup(`<table>
-                                    <tr><th>Hotel ${hotel.DESCRIPTION[4].key}: </th><td>${hotel.DESCRIPTION[4].value}</td></th>
-                                    <tr><th>${hotel.DESCRIPTION[3].key}: </th><td>${hotel.DESCRIPTION[3].value}</td></th>
-                                    <tr><th>${hotel.DESCRIPTION[2].key}: </th><td>${hotel.DESCRIPTION[2].value}</td></th>               
-                                    <tr><th>${hotel.DESCRIPTION[1].key}: </th><td>${hotel.DESCRIPTION[1].value}</td></th> 
-                                    <tr><th>Email: </th><td>${hotel.DESCRIPTION[0].value}</td></th>
-                                    <tr><th>Approved for Staycation?</th><td>${hotel.STAYCAY}</td></th>
-                                    <tr><th>Open for Stay-Home-Notice?</th><td>${hotel.SHN}</td></th>
-                                    </table>
-                                    `);
+            switch (fileType) {
+                case 'all':
+                    hotelMarker = L.marker(hotel.COORDINATES, { icon: allHotelIcon });
+                    break;
+                case 'staycay':
+                    hotelMarker = L.marker(hotel.COORDINATES, { icon: staycayIcon });
+                    break;
+                case 'shn':
+                    hotelMarker = L.marker(hotel.COORDINATES, { icon: shnIcon });
+                    break;
+                case 'nonshnstaycay':
+                    hotelMarker = L.marker(hotel.COORDINATES, { icon: nonShnStaycayIcon });
+                    break;
+                default:
+                    console.log('fileType does not match custom icon name. default icon created');
+                    hotelMarker = L.marker(hotel.COORDINATES);
+            }
+
+            let popup = L.popup({ minWidth: 400 }).setContent(`
+            <table class="hotel">
+            <tr><th>Hotel ${hotel.DESCRIPTION[4].key}: </th><td>${hotel.DESCRIPTION[4].value}</td></th>
+            <tr><th>${hotel.DESCRIPTION[3].key}: </th><td>${hotel.DESCRIPTION[3].value}</td></th>
+            <tr><th>${hotel.DESCRIPTION[2].key}: </th><td>${hotel.DESCRIPTION[2].value}</td></th>               
+            <tr><th>${hotel.DESCRIPTION[1].key}: </th><td>${hotel.DESCRIPTION[1].value}</td></th> 
+            <tr><th>Email: </th><td>${hotel.DESCRIPTION[0].value}</td></th>
+            <tr><th>Approved for Staycation?</th><td>${hotel.STAYCAY}</td></th>
+            <tr><th>Open for Stay-Home-Notice?</th><td>${hotel.SHN}</td></th>
+            </table>
+            `);
+            hotelMarker.bindPopup(popup);
             hotelMarker.addTo(hotelLayer);
         }
         return hotelLayer;
     }
 
-    const allHotelsLayer = createHotelLayer(masterHotelLists.all);
-    const staycayHotelsLayer = createHotelLayer(masterHotelLists.staycay);
-    const shnHotelsLayer = createHotelLayer(masterHotelLists.shn);
-    const nonShnStaycayLayer = createHotelLayer(masterHotelLists.nonShnStaycay);
+    const allHotelsLayer = createHotelLayer(masterHotelLists.all, 'all');
+    const staycayHotelsLayer = createHotelLayer(masterHotelLists.staycay, 'staycay');
+    const shnHotelsLayer = createHotelLayer(masterHotelLists.shn, 'shn');
+    const nonShnStaycayLayer = createHotelLayer(masterHotelLists.nonShnStaycay, 'nonshnstaycay');
 
     // add a layer group of covid clusters
     let clusterwithDate = await getCovidClusterList('data-source/covid-clusters23Sep2021.csv');
@@ -123,11 +161,11 @@ window.addEventListener('DOMContentLoaded', async function() {
     let baseLayer = {
         'Staycation Hotels': staycayHotelsLayer,
         'Stay-Home-Notice(SHN) Hotels': shnHotelsLayer,
-        'Non-SHN Staycation Hotels': nonShnStaycayLayer
+        'Non-SHN Staycation Hotels': nonShnStaycayLayer,
+        "All Hotels": allHotelsLayer
     };
 
     let overLay = {
-        "All Hotels": allHotelsLayer,
         'Dengue Clusters': dengueClusterLayer,
         'COVID-19 Clusters': covidClusterLayer
     }

@@ -11,22 +11,27 @@ window.addEventListener('DOMContentLoaded', function() {
         document.querySelector(`#${pageName}`).classList.replace('hidden', 'show');
     }
 
+    // add control to show/hide mapPage by clicking menu
     document.querySelector('#mapPageBtn').addEventListener('click', function() {
         updateVisibility('mapPageBtn');
     });
 
+    // add control to show/hide howToPage by clicking menu
     document.querySelector('#howToPageBtn').addEventListener('click', function() {
         updateVisibility('howToPageBtn');
     });
 
+    // add control to show/hide covidPage by clicking menu
     document.querySelector('#covidPageBtn').addEventListener('click', function() {
         updateVisibility('covidPageBtn');
     });
 
+    // add control to show/hide denguePage by clicking menu
     document.querySelector('#denguePageBtn').addEventListener('click', function() {
         updateVisibility('denguePageBtn');
     });
 
+    // add control to show/hide dataSourcePage by clicking menu
     document.querySelector('#dataSourcePageBtn').addEventListener('click', function() {
         updateVisibility('dataSourcePageBtn');
     });
